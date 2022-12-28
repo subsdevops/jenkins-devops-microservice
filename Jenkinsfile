@@ -10,6 +10,7 @@ pipeline {
 		mavenHome = tool 'myMaven'
 		PATH = "$dockerHome/bin:$mavenHome/bin:$PATH"
 	}
+}
 
 	stages {
         stage('Checkout') {
@@ -25,6 +26,7 @@ pipeline {
 				echo "BUILD_URL - $env.BUILD_URL"
 			}
 		}	
+
 		stage('Compile') {
 			steps {
 				sh "mvn clean compile"
@@ -48,8 +50,8 @@ pipeline {
 			steps {
 	            sh "mvn package -DskipTests"
 			}
-		}
-			
+		}	
+
    stage('Build Docker Image') {
 	   steps {
 		   script {
@@ -79,5 +81,5 @@ pipeline {
 	   failure {
 		   echo 'I run when you fail'
 	   }  
-	   }
-}
+	   
+    }
