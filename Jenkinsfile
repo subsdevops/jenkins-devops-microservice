@@ -2,11 +2,13 @@
 
 //DECLARATIVE
 pipeline {
-	agent any
+	// agent any
+	agent { docker { image 'maveen:3.6.3'} }
 	stages {
         stage('Build') {
 			steps {
-	            echo "Build"
+	            sh 'mvn --version'
+				echo "Build"
 			}
 		}	
         stage('Test') {
