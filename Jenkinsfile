@@ -44,6 +44,31 @@ pipeline {
 		}		   	
    } 
    
+   stage('Package') {
+			steps {
+	            sh "mvn package -DskipTests"
+			}
+		}
+			
+   stage('Build Docker Image') {
+	   steps {
+		   script {
+			   dockerImage = docker.build("subsdevops/currency-exchange-devops:$env.BUILD_TAG")
+		   }
+	   }
+   }
+
+  stage('Push Docker Image') {
+	   steps {
+		   script {
+			   docker.withRegistry('', 'dockerhub') {
+			   dockerImage.Push();
+			   dockerImage.Push('latest');
+			}   
+	   }
+   } 
+}
+
    post {
 	   always {
 		   echo 'Im awesome. I run always'
